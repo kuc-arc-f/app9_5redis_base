@@ -34,5 +34,11 @@ router.get('/edit/:id', function(req, res) {
   //{ title: 'Express'}
       res.render('tasks/edit', {"params_id": req.params.id });
 });
+/******************************** 
+* 
+*********************************/
+router.get('/import_task', function(req, res, next) {
+    res.render('tasks/import_task', {});
+});
 
 module.exports = router;

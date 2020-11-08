@@ -4,7 +4,8 @@ const redis = require("redis");
 const {promisify} = require('util');
 import LibCommon from "../libs/LibCommon"
 import LibPagenate from "../libs/LibPagenate"
-
+import LibSortedTasks from "../libs/LibSortedTasks"
+//
 const client = redis.createClient();
 
 const mgetAsync = promisify(client.mget).bind(client);
@@ -20,8 +21,8 @@ router.get('/', function(req, res, next) {
 router.get('/tasks_index',async function(req, res) {
     var ret_arr = {ret:0, msg:""}
     var query = req.query;
-//    var page = query.page; 
-    var page = 1;
+    var page = query.page;
+//    var page = 1;
 console.log( "page=",  page );
     LibPagenate.init();
     var page_info = LibPagenate.get_page_start(page);
@@ -40,32 +41,19 @@ console.log( "page=",  page );
 /******************************** 
 * 
 *********************************/
-router.post('/tasks_new', (req, res) => {
+router.post('/tasks_new', async function(req, res) {
     var ret_arr = {ret:0, msg:""}
     try{
+        client.on("error", function(error){ console.error(error); });
         var data = req.body
         //console.log(data )
-        var key_idx  = "idx-task";
-        var key_head  = "task:";
-        var key_sorted  = "sorted-task";
-        client.on("error", function(error) {
-            console.error(error);
-        });    
-        client.incr(key_idx, function(err, reply) {
-            var key = key_head + String(reply)
-            console.log( key );
-            client.zadd(key_sorted , reply , key );
-            var item = {
-                title: data.title ,  
-                content: data.content ,
-                id: key,
-            };
-            var json = JSON.stringify( item );
-            client.set(key , json , function() {
-                var param = {"ret": 1 };
-                res.json(param); 
-            });
-        });
+        var item = {
+            title: data.title ,  
+            content: data.content ,
+        };
+        var ret = await LibCommon.add_item(client, item, "task")
+        var param = {"ret": ret };
+        res.json(param)        
     } catch (e) {
         console.log(e);
         ret_arr.msg = e
@@ -131,6 +119,24 @@ console.log( req.params.id );
         res.json(param);
     });
 
+});
+// file_receive
+/******************************** 
+* 
+*********************************/
+router.post('/file_receive', function(req, res, next) {
+    let data = req.body
+    var items = JSON.parse(data.data || '[]')
+    var ret_arr = {ret:0, msg:""}
+    client.on("error", function(error) {
+        console.error(error);
+        ret_arr.msg = error
+        res.json(ret_arr);
+    });  
+console.log( items )
+    var ret = LibSortedTasks.add_items(client, items);
+    var param = {"ret": ret };
+    res.json(param);
 });
 
 /******************************** 

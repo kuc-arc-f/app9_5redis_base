@@ -3,8 +3,11 @@
     <div class="col-sm-6">
         <a href="/tasks/new">[ new ] </a>
     </div>
-</div>
+    <div class="col-sm-6">
+        <a href="/tasks/import_task">[ Import-task ] </a>
+    </div>
 
+</div>
 <hr />
 <div id="app"></div>
 
@@ -48,7 +51,7 @@ class List extends React.Component {
     dispPagenate(){
 //console.log(this.state.paginate_disp)
         if(this.state.paginate_disp ===1){
-            var url = "/sorted_tasks?page="
+            var url = "/tasks?page="
             return(
             <div className="paginate_wrap">
                 <div className="btn-group" role="group" aria-label="Basic example">

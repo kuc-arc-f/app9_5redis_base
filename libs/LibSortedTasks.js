@@ -12,7 +12,7 @@ export default {
             items.forEach(async function (item) {
                 var reply = await incrAsync("idx-task");
                 var key = "task:" + String(reply)
-                await zaddAsync("sorted_tasks", reply, key);
+                await zaddAsync("sorted-task", reply, key);
                 var task = {
                     title: item.title ,  
                     content: item.content ,
