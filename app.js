@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const flash = require('express-flash');
 var session = require('express-session');
 
 //
@@ -24,7 +25,8 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+//app.use(cookieParser());
+app.use(cookieParser('keyboard cat'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req,res,next){
@@ -47,6 +49,7 @@ app.use(session({
     secure: false
   }
 }));
+app.use(flash());
 
 // route
 app.use('/', indexRouter);

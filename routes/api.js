@@ -52,6 +52,7 @@ router.post('/tasks_new', async function(req, res) {
             content: data.content ,
         };
         var ret = await LibCommon.add_item(client, item, "task")
+        req.flash('success', 'Complete, save task');
         var param = {"ret": ret };
         res.json(param)        
     } catch (e) {

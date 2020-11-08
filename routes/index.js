@@ -8,11 +8,17 @@ router.get('/', function(req, res, next) {
     try{
         var user = LibAuth.get_user(req)
         var mail = null
+        var valid_login = false
         if(user != null){
+            valid_login = true
             mail = user.mail
 //            console.log(user.password );
         }
-        res.render('index.ejs', { mail: mail });
+        var items ={ msg: "" }
+        res.render('index.ejs', { 
+            mail: mail ,valid_login: valid_login,
+            items: items
+        });
     } catch (e) {
         console.log(e);
     }  

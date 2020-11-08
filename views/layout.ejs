@@ -36,9 +36,16 @@
 			</ul>
 		</div>
 		<hr />
-	</nav>		
+	</nav>
+	<!-- flash -->
+	<% if(messages.success){ %>
+		<div class="alert alert-success" role="alert"><%=messages.success %></div><br/>
+	<% } %>	
+	<% if(messages.err){ %>
+		<div class="alert alert-danger" role="alert"><%=messages.err %></div><br/>
+	<% } %>
 	<div class="container">
-		    <%- body %>
+		<%- body %>
 	</div>
 </body>
 </html>
