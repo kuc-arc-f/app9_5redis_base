@@ -2,8 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 import LibAuth from "../libs/LibAuth"
+import LibBaseParams from "../libs/LibBaseParams"
 
-/* GET home page. */
+/******************************** 
+* 
+*********************************/
 router.get('/', function(req, res, next) {
     try{
         var user = LibAuth.get_user(req)
@@ -14,10 +17,12 @@ router.get('/', function(req, res, next) {
             mail = user.mail
 //            console.log(user.password );
         }
-        var items ={ msg: "" }
+//        var items ={ msg: "" }
+//        var render_items = { msg: "" }
+        var base_items = { valid_login: valid_login }
         res.render('index.ejs', { 
             mail: mail ,valid_login: valid_login,
-            items: items
+            base_items: base_items,
         });
     } catch (e) {
         console.log(e);
@@ -37,6 +42,38 @@ router.get('/logout', function(req, res) {
     res.clearCookie('user');
     res.redirect('/');
 });
-
+/******************************** 
+* 
+*********************************/
+router.get('/test1', function(req, res, next) {
+    try{
+        var name1 = req.cookies.name1;
+console.log( req.cookies) 
+console.log("name1", name1)
+/*
+        res.cookie('name1', 'value1', {
+            maxAge: 60000,
+            httpOnly: false
+        })
+*/
+        res.json(req.cookies)
+    } catch (e) {
+        console.log(e);
+    }  
+});
+/******************************** 
+* 
+*********************************/
+router.get('/test2', function(req, res, next) {
+    try{
+        res.cookie('name1', 'value1', {
+            maxAge: 60000,
+            httpOnly: false
+        })
+        res.json(req.cookies)
+    } catch (e) {
+        console.log(e);
+    }  
+});
   
 module.exports = router;

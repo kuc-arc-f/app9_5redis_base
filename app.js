@@ -25,8 +25,8 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(cookieParser());
-app.use(cookieParser('keyboard cat'));
+app.use(cookieParser());
+// app.use(cookieParser('keyboard cat'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req,res,next){
@@ -42,7 +42,7 @@ app.use(session({
   //未初期化状態のセッションを保存しない
   saveUninitialized: false,
   cookie: {
-    //生存期間
+    //生存期間( msec )
 //    maxAge: 3 * 24 * 60 * 1000,
     maxAge: 365 * 24 * 60 * 1000,
     //httpsを使用しない

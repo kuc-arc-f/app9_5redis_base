@@ -96,6 +96,7 @@ router.post('/tasks_update', (req, res) => {
         var json = JSON.stringify( item );
     //console.log( json );
         client.set(key , json , function() {
+            req.flash('success', 'Complete, save task');
             var param = {"ret": 1 };
             res.json(param);
         });          
@@ -116,6 +117,7 @@ console.log( req.params.id );
     });  
     var key_sorted  = "sorted-task";  
     client.zrem(key_sorted , req.params.id , function() {
+        req.flash('success', 'Complete, delete item');
         var param = {"ret": 1 };
         res.json(param);
     });

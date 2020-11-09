@@ -23,7 +23,7 @@
 		<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav">
+			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
 					<a class="nav-link" href="/">Home</a>
 				</li>
@@ -34,10 +34,21 @@
 					<a class="nav-link" href="/tasks">Tasks</a>
 				</li>
 			</ul>
+			<!-- right_nav -->
+			<ul class="navbar-nav">
+				<% if(typeof base_items !== 'undefined' ){ %>
+					<% if(base_items.valid_login){ %>
+						<a href="/logout">[ Logout ]</a>
+					<% }else{ %>				
+						<a href="/login">[ Login ]</a>
+					<% }%>
+				<% } %>				
+			</ul>			
 		</div>
 		<hr />
 	</nav>
 	<!-- flash -->
+
 	<% if(messages.success){ %>
 		<div class="alert alert-success" role="alert"><%=messages.success %></div><br/>
 	<% } %>	
