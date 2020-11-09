@@ -6,6 +6,7 @@ const {promisify} = require('util');
 const client = redis.createClient();
 
 import LibAuth from "../libs/LibAuth"
+import LibCsrf from "../libs/LibCsrf"
 import LibCommon from "../libs/LibCommon"
 import LibPagenate from "../libs/LibPagenate"
 
@@ -39,6 +40,7 @@ console.log( "page=",  page );
 * 
 *********************************/
 router.get('/add', function(req, res, next) {
+    LibCsrf.set_token(req, res) 
     res.render('users/add', {});
 });
 /******************************** 
@@ -46,6 +48,7 @@ router.get('/add', function(req, res, next) {
 *********************************/
 router.post('/add', async function(req, res, next){
     try{ 
+        if(LibCsrf.valid_token(req, res)== false){ return false; }
         let data = req.body
         console.log( data );
         let hashed_password = bcrypt.hashSync(data.password, 10);
@@ -55,11 +58,12 @@ router.post('/add', async function(req, res, next){
             password: hashed_password ,
         };        
         var ret = await LibCommon.add_item(client, item, "user")
-//        var param = {"ret": ret };
-//        res.json(param);  
-        res.redirect('/')       
+        req.flash('success', 'Complete, save User'); 
+        res.redirect('/')      
     } catch (e) {
         console.log(e);
+        req.flash('err', 'Error ,save User');
+        res.redirect('/')        
     }    
 });
 /******************************** 

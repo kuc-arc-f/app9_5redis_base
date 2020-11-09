@@ -1,10 +1,9 @@
 <br />
 <div class="row">
     <div class="col-sm-6">
-        <a href="/tasks/add">[ Add ] </a>
+        <a href="/react_tasks/new">[ new ] </a>
     </div>
     <div class="col-sm-6">
-        <a href="/tasks/import_task">[ Import-task ] </a>
     </div>
 
 </div>
@@ -12,7 +11,7 @@
 <div id="app"></div>
 
 <!-- -->
-<script type="text/babel" src="/js/component/Tasks/IndexRow.js" ></script>
+<script type="text/babel" src="/js/component/ReactTasks/IndexRow.js" ></script>
 <script type="text/babel">
 var PAGE = <%= page %>;
 //
@@ -65,7 +64,7 @@ class List extends React.Component {
     render(){
         return (
             <div>
-                <h1>Tasks</h1>
+                <h1>ReactTasks</h1>
                 <table className="table table-hover">
                     <thead>
                     <tr>

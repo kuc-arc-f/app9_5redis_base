@@ -24,8 +24,10 @@ export default {
         } catch (e) {
             console.log(e);
             console.log("error, csrf token");
-            res.clearCookie('user');
-            res.redirect('/login')
+            req.flash('err', 'Error , csrf token');
+//            res.clearCookie('user');
+//            res.redirect('/login')
+            res.redirect('/')
             return false
         }  
 

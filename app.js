@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var userRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var tasksRouter = require('./routes/tasks');
+var reactTasksRouter = require('./routes/react_tasks');
 //api
 var apiRouter = require('./routes/api');
 
@@ -43,7 +44,6 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     //生存期間( msec )
-//    maxAge: 3 * 24 * 60 * 1000,
     maxAge: 365 * 24 * 60 * 1000,
     //httpsを使用しない
     secure: false
@@ -56,6 +56,7 @@ app.use('/', indexRouter);
 app.use('/users', userRouter );
 app.use('/login', loginRouter );
 app.use('/tasks', tasksRouter );
+app.use('/react_tasks', reactTasksRouter );
 // api
 app.use('/api', apiRouter);
 

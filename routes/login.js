@@ -32,7 +32,7 @@ router.post('/',async function(req, res){
         if(LibCsrf.valid_token(req, res)== false){ return false; }
         var data = req.body
         var valid_user = await LibAuth.validRedisUserAuth(res ,client, data.email, data.password )
-console.log( valid_user )  
+console.log( valid_user  )  
         if (valid_user){
 //            console.log(hashed_password);  
             req.flash('success', 'Welcom, Login completed.');  

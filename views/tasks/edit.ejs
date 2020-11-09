@@ -1,87 +1,33 @@
-<div id="app"></div>
-
-<!-- -->
-<script type="text/babel">
-
-class Edit extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: '', 
-            content: '' ,
-        }
-        this.id = props.id
-        this.handleClick = this.handleClick.bind(this);
-        this.handleClickDelete = this.handleClickDelete.bind(this);
-//console.log(this.id)
-    }
-    componentDidMount(){
-        this.get_item( this.id )        
-    }
-    async get_item(id){
-        axios.get("/api/tasks_show/" + id ).then(res =>  {
-            var dat = res.data.docs
-//console.log( dat )
-            var item = dat
-            this.setState({ 
-                title: item.title,
-                content: item.content,
-            });            
-//console.log( this.state.data.title )
-        })        
-    }
-    async save_item(){
-        var task = {
-            id: this.id,
-            title: this.state.title,
-            content: this.state.content,
-        }
-        axios.post('/api/tasks_update/', task ).then(res => {
-            console.log(res.data );
-            window.location.href = "/tasks"
-        });        
-    }
-    async delete_item(){
-        axios.get("/api/tasks_delete/" +this.id ).then(res =>  {
-            console.log( res.data )
-            window.location.href = "/tasks"
-        })        
-    }      
-    handleChangeTitle(e){
-        this.setState({title: e.target.value})
-    }
-    handleChangeDesc(e){
-        this.setState({content: e.target.value})
-    }
-    handleClick(){
-            console.log("#-handleClick")
-            this.save_item()
-    //        console.log( this.state )
-    } 
-    handleClickDelete(){
-        console.log("#-handleClickDelete")
-        this.delete_item()
-    }   
-    render(){
-        return (
-        <div className="mt-2">
-            <div className="form-group">
-                <label>Title :</label>
-                <input type="text" className="form-control" onChange={this.handleChangeTitle.bind(this)}
-                value={this.state.title}  />
-            </div>
-            <div className="form-group">
-                <label>content</label>
-                <textarea className="form-control"  rows="3" value={this.state.content}
-                    onChange={this.handleChangeDesc.bind(this)}></textarea>
-            </div>   
-            <button onClick={this.handleClick}>Save</button>
-            <hr />            
-            <button onClick={this.handleClickDelete}>Delete</button>
+<div id="app">
+    <h1>Task edit</h1>
+    <hr />
+    <form action="/tasks/update" method="post">
+        <div>
+            <input type="hidden" name="id" size="30" maxlength="40"
+            value="<%= task.id %>" required>
+            <p>
+                <label>title :
+                <input type="text" name="title" size="30" maxlength="40"
+                value="<%= task.title %>" required>
+                </label>
+            </p>
         </div>
-        )
-    }
-}
-ReactDOM.render(<Edit id="<%= params_id %>"  />, document.getElementById('app'));
-</script>
+        <div>
+            <label>content :</label>
+            <input type="text" name="content" 
+            value="<%= task.content %>" required />
+        </div>
+        <div>
+            <input type="submit" value="Save"/>
+        </div>
+    </form>    
+    <hr />
+    <form action="/tasks/delete" method="post">
+        <div>
+            <input type="hidden" name="id" value="<%= task.id %>" required>                
+            <input type="submit" value="Delete"/>
+        </div>
+    </form>
+</div>
+
 

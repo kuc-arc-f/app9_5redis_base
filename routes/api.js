@@ -22,14 +22,13 @@ router.get('/tasks_index',async function(req, res) {
     var ret_arr = {ret:0, msg:""}
     var query = req.query;
     var page = query.page;
-//    var page = 1;
 console.log( "page=",  page );
     LibPagenate.init();
     var page_info = LibPagenate.get_page_start(page);
     try{
         client.on("error", function(error){ console.error(error); });         
         var data = await zrevrangeAsync("sorted-task", page_info.start, page_info.end );
-// console.log( data );
+console.log( data );
         var reply_books = await mgetAsync(data);
         var param = LibPagenate.get_page_items(data, reply_books)
         res.json(param); 
@@ -66,9 +65,7 @@ router.post('/tasks_new', async function(req, res) {
 *********************************/
 router.get('/tasks_show/:id', function(req, res) {
     console.log(req.params.id );
-    client.on("error", function(error) {
-        console.error(error);
-    });  
+    client.on("error", function(error){ console.error(error); });
     client.get(req.params.id, function(err, reply_get) {
         console.log(reply_get );
         var row = JSON.parse(reply_get || '[]')
@@ -84,9 +81,7 @@ router.post('/tasks_update', (req, res) => {
     try{
         var data = req.body
         console.log(req.body )  
-        client.on("error", function(error) {
-            console.error(error);
-        });
+        client.on("error", function(error){ console.error(error); });
         var key = data.id;
         var item = {
             title: data.title ,  
@@ -112,18 +107,14 @@ router.post('/tasks_update', (req, res) => {
 router.get('/tasks_delete/:id', function(req, res) {
     let data = req.body
 console.log( req.params.id );
-    client.on("error", function(error) {
-        console.error(error);
-    });  
+    client.on("error", function(error){ console.error(error); });
     var key_sorted  = "sorted-task";  
     client.zrem(key_sorted , req.params.id , function() {
         req.flash('success', 'Complete, delete item');
         var param = {"ret": 1 };
         res.json(param);
     });
-
 });
-// file_receive
 /******************************** 
 * 
 *********************************/

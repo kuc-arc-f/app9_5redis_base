@@ -1,6 +1,7 @@
 // LibAuth
 const bcrypt = require('bcrypt');
 const {promisify} = require('util');
+import LibCookie from "../libs/LibCookie"
 
 //
 export default {
@@ -39,7 +40,7 @@ export default {
 console.log( row );
 // console.log( row.mail , hashed_password );
                     var json = JSON.stringify( row );
-                    res.cookie('user', json );
+                    LibCookie.set_cookie(res, 'user', json)
                     ret = true
                 }
             });
