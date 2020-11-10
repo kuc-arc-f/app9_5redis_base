@@ -37,7 +37,7 @@ class List extends React.Component {
             this.setState({ 
                 data: items ,item_count:item_count ,paginate_disp: paginate_disp
             })
-// console.log(res.data.page_item );
+// console.log( items );
         })
     }    
     tabRow(){
@@ -79,7 +79,7 @@ class List extends React.Component {
                 </table> 
                 <hr />
                 {this.dispPagenate()}
-                <br />           
+                <br /><br />           
             </div>
         )
     }

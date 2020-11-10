@@ -42,6 +42,7 @@ router.post('/add', async function(req, res, next) {
         var item = {
             title: data.title ,  
             content: data.content ,
+            created_at: new Date(),
         };
         var ret = await LibCommon.add_item(client, item, "task")
         req.flash('success', 'Complete, save task');
@@ -70,15 +71,14 @@ router.get('/edit/:id',async function(req, res) {
 router.post('/update', async function(req, res, next) {
     try{
         var data = req.body
-        console.log(data )          
 // console.log(data )
         client.on("error", function(error){ console.error(error); });
         var key = data.id;
-        var item = {
-            title: data.title ,  
-            content: data.content ,
-            id: key,
-        };
+        var item = await getAsync(key);
+        item = JSON.parse(item || '[]')
+        item.title =data.title;
+        item.content = data.content;
+//console.log(item)
         var json = JSON.stringify( item );
         client.set(key , json , function() {
             req.flash('success', 'Complete, save task');

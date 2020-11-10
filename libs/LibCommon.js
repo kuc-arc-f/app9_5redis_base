@@ -1,5 +1,6 @@
 // LibCommon
 const {promisify} = require('util');
+import moment from 'moment'
 
 //
 export default {
@@ -10,8 +11,32 @@ export default {
     //        console.log( row );
             ret.push( row )
         });
+        ret = this.string_to_date(ret)
         return ret;        
     },
+    string_to_date:function(items){
+        var ret = [];
+        items.forEach(function(item){
+            if(typeof item.created_at !== 'undefined' ){
+//                console.log( item );
+                item.created_at = new Date(item.created_at )
+                var dt = moment(item.created_at )
+                item.date_str = dt.format('YYYY-MM-DD HH:mm')
+            }
+            ret.push( item )
+        });
+        return ret;        
+    },  
+    convert_string_date:function(item){
+        var ret = [];
+        if(typeof item.created_at !== 'undefined' ){
+            //                console.log( item );
+            item.created_at = new Date(item.created_at )
+            var dt = moment(item.created_at )
+            item.date_str = dt.format('YYYY-MM-DD HH:mm')
+        }
+        return item;        
+    },       
     add_item :async function(client, item, entity_name ){
         var key_idx = "idx-" + entity_name;
         var key_sorted = "sorted-" + entity_name;

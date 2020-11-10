@@ -30,11 +30,11 @@ export default {
         }
         //ret = parseInt( num );
         return ret;
-
     },
     get_page_items(data, reply_books){
         var paginate_disp = this.is_paging_display(data.length)
         const task_items = LibCommon.string_to_obj(reply_books)
+// console.log(task_items)
         var page_item = {
             "item_count":data.length ,"paginate_disp": paginate_disp
         }

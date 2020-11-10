@@ -28,9 +28,10 @@ console.log( "page=",  page );
     try{
         client.on("error", function(error){ console.error(error); });         
         var data = await zrevrangeAsync("sorted-task", page_info.start, page_info.end );
-console.log( data );
+// console.log( data );
         var reply_books = await mgetAsync(data);
         var param = LibPagenate.get_page_items(data, reply_books)
+//console.log( param );        
         res.json(param); 
     } catch (e) {
         console.log(e);
@@ -69,6 +70,7 @@ router.get('/tasks_show/:id', function(req, res) {
     client.get(req.params.id, function(err, reply_get) {
         console.log(reply_get );
         var row = JSON.parse(reply_get || '[]')
+        row = LibCommon.convert_string_date(row)
         var param = {"docs": row };
         res.json(param); 
     });     
